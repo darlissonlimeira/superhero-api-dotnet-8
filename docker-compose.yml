@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  superhero_db:
+    image: postgres:15.3-alpine
+    container_name: superhero_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    networks:
+      - app_network
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+
+  superhero_api:
+    image: superhero_api
+    build:
+      dockerfile: Dockerfile
+    container_name: superhero_api
+    depends_on:
+      - superhero_db
+    ports:
+      - 127.0.0.1:8080:8080
+    restart: always
+    networks:
+      - app_network
+    environment:
+      - ConnectionStrings__DBConnection        
+
+networks:
+  app_network:
+    name: superhero_app
+
+volumes:
+  db_volume:  
