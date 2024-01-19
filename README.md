@@ -1,5 +1,7 @@
 # Superhero API CRUD
 
+This project had as main goal learn more about docker, docker compose, communication between docker containers as well building APIs with .Net 8 and Entity Framework.
+
 
 ### Techs
     - Docker
@@ -18,7 +20,9 @@
 Running the database container:
 
 * Run ```docker compose up -d superohero_db```
-* Run ```docker exec -it superhero_db bash```
+
+Now we need to create the superheroes table in the "postgres" database:
+* Run ```docker exec -it superhero_db bash``` - to get inside the container;
 * Run ```psql -U postgres```
 * Create superheroes table: 
     ```
@@ -34,8 +38,11 @@ Running the database container:
 
 Running the API container:
 
-* Run ```docker run --name superhero_api -p 127.0.0.1:8080:8080 -e ConnectionStrings__DBConnection="Host=superhe
-ro_db;Database=postgres;Username=postgres;Password=postgres;" --network="superhero_app"  -d superhero_api```
+Because we need to pass the url connection of our database as an environment variable, we have to first build our docker api image and then we run our api container.
+
+* Run ```docker compose build superhero_api``` - This command gonna create a image of your API without running it
+* Then run ```docker run --name superhero_api -p 127.0.0.1:8080:8080 -e ConnectionStrings__DBConnection="Host=superhe
+ro_db;Database=postgres;Username=postgres;Password=postgres;" --network=superhero_app  -d superhero_api``` - This command gonna start our container. It setup the port and host, network name that has to be the same of our database container network, so the api container can communicate with our database.
 
 
 
