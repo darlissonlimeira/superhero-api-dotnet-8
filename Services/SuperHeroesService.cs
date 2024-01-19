@@ -30,7 +30,9 @@ namespace SuperHeroApi.Services
         public async Task<int?> Remove(int id)
         {
             var superHero = await FindById(id);
-            if (superHero == null) return null;
+
+            if (superHero is null) return null;
+
             _dbContext.SuperHeroes.Remove(superHero);
             return await _dbContext.SaveChangesAsync();
 
@@ -46,6 +48,7 @@ namespace SuperHeroApi.Services
                 LastName = request.LastName,
                 Place = request.Place,
             };
+
             _dbContext.SuperHeroes.Add(superHero);
             await _dbContext.SaveChangesAsync();
         }
@@ -54,7 +57,7 @@ namespace SuperHeroApi.Services
         {
             var superHero = await FindById(superHeroId);
 
-            if (superHero == null) return null;
+            if (superHero is null) return null;
 
             superHero.Name = request.Name;
             superHero.FirstName = request.FirstName;
@@ -62,6 +65,7 @@ namespace SuperHeroApi.Services
             superHero.Place = request.Place;
 
             _dbContext.SuperHeroes.Attach(superHero);
+
             return await _dbContext.SaveChangesAsync();
         }
     }

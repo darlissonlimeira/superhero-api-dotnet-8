@@ -19,15 +19,15 @@ services:
     build:
       dockerfile: Dockerfile
     container_name: superhero_api
-    depends_on:
-      - superhero_db
     ports:
       - 127.0.0.1:8080:8080
     restart: always
     networks:
       - app_network
     environment:
-      - ConnectionStrings__DBConnection        
+      - ConnectionStrings__DBConnection   
+    depends_on:
+      - superhero_db       
 
 networks:
   app_network:
